@@ -1,0 +1,2 @@
+"test": "exec commands/alias_test.mbs"
+"hi": "echo hi asdasdsadasd"

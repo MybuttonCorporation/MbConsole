@@ -1,0 +1,12 @@
+C:\Users\winpc\source\repos\Codebutton\Codebutton\bin\Debug\Codebutton.exe.config
+C:\Users\winpc\source\repos\Codebutton\Codebutton\bin\Debug\Codebutton.exe
+C:\Users\winpc\source\repos\Codebutton\Codebutton\bin\Debug\Codebutton.pdb
+C:\Users\winpc\source\repos\Codebutton\Codebutton\obj\Debug\Codebutton.csproj.AssemblyReference.cache
+C:\Users\winpc\source\repos\Codebutton\Codebutton\obj\Debug\Codebutton.csproj.SuggestedBindingRedirects.cache
+C:\Users\winpc\source\repos\Codebutton\Codebutton\obj\Debug\Codebutton.Form1.resources
+C:\Users\winpc\source\repos\Codebutton\Codebutton\obj\Debug\Codebutton.Properties.Resources.resources
+C:\Users\winpc\source\repos\Codebutton\Codebutton\obj\Debug\Codebutton.csproj.GenerateResource.cache
+C:\Users\winpc\source\repos\Codebutton\Codebutton\obj\Debug\Codebutton.csproj.CoreCompileInputs.cache
+C:\Users\winpc\source\repos\Codebutton\Codebutton\obj\Debug\Codebutton.exe
+C:\Users\winpc\source\repos\Codebutton\Codebutton\obj\Debug\Codebutton.pdb
+C:\Users\winpc\source\repos\Codebutton\Codebutton\obj\Debug\Codebutton.Form2.resources

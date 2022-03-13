@@ -1,0 +1,1 @@
+﻿@timeout 1 >nul && @msbuild && @bin\Debug\MbConsole %*

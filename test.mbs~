@@ -1,0 +1,7 @@
+log Test.mbs (test script for MbConsole)
+log ** VARIABLES ** 
+log Console-Name = $.conNm
+log Console-Pass = $.conPass
+log Console-devm = $.devConsole
+log Console-skip = $.skipLoading
+log Console-test = $.helpTest
