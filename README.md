@@ -12,4 +12,4 @@ it is easier to execute commands.
 For help in the console, execute 'help' in the app.
 
 ## License
-https://www.mybutton.org/docs/tos?app=MbConsole
+![MIT](https://www.mybutton.org/docs/tos?app=MbConsole)
