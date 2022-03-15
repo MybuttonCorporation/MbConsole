@@ -382,7 +382,7 @@ namespace Codebutton
 
             }
         }
-        public async void throwScriptError(string message, string fileName, int lineNm, int collumn = 0)
+        public void throwScriptError(string message, string fileName, int lineNm, int collumn = 0)
         {
             string fileNm = System.IO.Path.GetFullPath(fileName);
             Console.WriteLine("ScriptError: " + message + "\nOn " + fileNm + ": " + lineNm.ToString() + ", " + collumn.ToString());
