@@ -1,0 +1,58 @@
+#script_type=WRITE
+# MbConsole Help Menu
+
+	Welcome to MbConsole. MbConsole is a powerful console engine built on the MyBash console, allowing builtin commands and prompts
+	We are always working on improving your experience! visit https://www.mybutton.org/ for our projects.
+
+
+** Commands **
+~ log X		Logs X to the console.
+~ cd  X		Changes the current directory to X.
+~ . 			Executes the last command again.
+~ clear 		Clears the Console Output Screen.
+~ exec X		Executes the Script X.
+~ account 		Shows the variables in config.lmf
+~ var X=Y 		sets the variable X to the value Y.
+~ err_message X Shows the ERRORBOX with the message X.
+~ restart 		Restarts the Console.
+~ quit 		Quits the Console.
+
+** CONFIGURATIONS **
+Configurations are stored in ~\config.lmf. To create a config file, create a file and name it config.lmf. Then, edit it with notepad and add the values of variables you'd like.
+An example would be:
+	my_name=MbConsole Application
+	my_future_job=Programmer
+These variables are always stored in the console variable list. They do not reset at quit/restart. 
+
+** ALIASES **
+MbConsole supports aliases that execute other commands. To Create an alias config file, create a file named alias.lmf and edit it notepad. 
+The syntax is like this:
+	"command_name": "commands to execute"
+
+Aliases are not executed as normal commands. an alias has $. before the command.
+An example:
+	"test": "echo this is a test command."
+
+	when we execute 'test' on the console, this happens:
+		Console returned null (err_unknown_cmd)
+	but, if we execute '$.test', this will occur:
+		this is a test command.
+	Aliases have $. before them.
+
+
+** SCRIPTS **
+MbConsole also supports scripts. to create one, create a file with the extension .mbs. (if you want to create a script named APP, you'd make the name APP.mbs.)
+Edit it with notepad and add the commands you want to execute.
+	An example:
+		log hello, this is the script APP. 
+		log APP is a test script.
+		// this is a comment, it will be ignored.
+		; this is also a comment, it will be ignored too.
+		;quitScript()
+			// that is a script command.
+To execute this script, type 'exec YOUR_SCRIPT_NAME.mbs' and it will run on the console.
+
+
+[TERMS OF SERVICE] https://www.mybutton.org/docs/tos/
+(c) Mybutton Corporation, all rights reserved.
+For further info, visit https://www.mybutton.org/

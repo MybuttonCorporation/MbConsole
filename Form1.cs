@@ -5,6 +5,7 @@ using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Text;
+using System.IO;
 using System.Threading.Tasks;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
@@ -133,7 +134,6 @@ namespace Codebutton
                 progressBar1.Style = ProgressBarStyle.Blocks;
                 try
                 {
-                    Console.Title = "MbConsole Debugging Terminal (admin-only)";
 
                 }
                 catch
@@ -141,13 +141,12 @@ namespace Codebutton
 
                 }
                 this.progressBar1.Visible = false;
-                this.label1.Text = "MbConsole@dev (2.1)";
+                this.label1.Text = "MbConsole@dev (2.2)";
                 this.label2.Visible = false;
                 this.TextBox1.Visible = true;
                 Console.WriteLine("Skipping GUI load, this will cause lag but the system will be loaded faster.");
                 Console.WriteLine("GUI Loaded, execution of commands are now allowed.\n");
-                cast(">> MbConsole (version 0.5, developer)");
-                cast("** Application Available for client-sided use **");
+                ExecuteCommand("applicationStart");
                 await System.Threading.Tasks.Task.Delay(1000);
                 commandRequester.KeyDown += TextBoxKeyUp;
                 
@@ -196,8 +195,7 @@ namespace Codebutton
                 this.label2.Visible = false;
                 this.TextBox1.Visible = true;
                 Console.WriteLine("GUI Loaded, execution of commands are now allowed.\n");
-                cast(">> MbConsole (version 0.5, developer)");
-                cast("** Application Available for client-sided use **");
+                ExecuteCommand("applicationStart");
                 await System.Threading.Tasks.Task.Delay(1000);
                 commandRequester.KeyDown += TextBoxKeyUp;
             }
@@ -333,7 +331,49 @@ namespace Codebutton
             }
 
         }
-        public void execute_internal_command(string command)
+
+        private void encryptScript(string fileName)
+        {
+            Byte[] bytes = File.ReadAllBytes(fileName);
+            String file = Convert.ToBase64String(bytes);
+            Console.WriteLine(file);
+            System.IO.File.AppendAllText(Path.GetFileNameWithoutExtension(fileName) + ".mpf", file);
+            /*
+            if (System.IO.File.Exists(fileName + ".mbs"))
+            {
+                string[] file_lines = System.IO.File.ReadAllLines(fileName + ".mbs");
+                foreach (string line in file_lines)
+                {
+                    string encodedLine = Base64Encode(line);
+                    System.IO.File.AppendAllText(System.IO.Path.GetFileNameWithoutExtension(fileName) + ".mpf", encodedLine + "\n");
+
+                }
+
+            }
+            else if (System.IO.File.Exists(fileName))
+            {
+                string[] file_lines = System.IO.File.ReadAllLines(fileName);
+                foreach (string line in file_lines)
+                {
+                    string encodedLine = Base64Encode(line);
+                    System.IO.File.AppendAllText(System.IO.Path.GetFileNameWithoutExtension(fileName) + ".mpf", encodedLine + "\n");
+
+                }
+
+            }
+            */
+        }
+        public static string Base64Encode(string plainText)
+        {
+            var plainTextBytes = System.Text.Encoding.UTF8.GetBytes(plainText);
+            return System.Convert.ToBase64String(plainTextBytes);
+        }
+        public static string Base64Decode(string base64EncodedData)
+        {
+            var base64EncodedBytes = System.Convert.FromBase64String(base64EncodedData);
+            return System.Text.Encoding.UTF8.GetString(base64EncodedBytes);
+        }
+        public async void execute_internal_command(string command)
         {
             string path = System.Reflection.Assembly.GetExecutingAssembly().CodeBase;
             
@@ -345,9 +385,16 @@ namespace Codebutton
             {
                 string[] lines = System.IO.File.ReadAllLines(directory + @"\cmds\" + command + ".mpf");
                 string script_type = "EXECUTE";
-
-                foreach (string line in lines)
+                File.WriteAllText("tmp." + command + ".mpf", string.Empty);
+                foreach (string encLine in lines)
                 {
+                    string line = Encoding.UTF8.GetString(Convert.FromBase64String(encLine));
+                    File.AppendAllText("tmp." + command + ".mpf", line);
+                }
+                string[] decrypted_file = File.ReadAllLines("tmp." + command + ".mpf");
+                foreach (string line in decrypted_file)
+                {
+
                     if (line.StartsWith("#script_type=")) {
                         //Given the script in the internal `\cmds\ path, determine the script_type for the script.
                         if (line != "#script_type=")
@@ -373,8 +420,36 @@ namespace Codebutton
                             }
                         }
                     }
-                    //others will be done later, 2.2 cannot handle that currently
+                    if (script_type == "EXECUTE")
+                    {
+                        //the script is an EXECUTE script. It will execute the command in each line one after another
+                        if (!line.StartsWith("#script_type="))
+                        {
+                            if (!line.StartsWith("'''") && !line.EndsWith("'''"))
+                            {
+                                if (!line.StartsWith("#region "))
+                                {
+                                    //execute the line
+                                    ExecuteCommand(line);
+                                }
+                                else if (!line.StartsWith("#endregion"))
+                                {
+                                    
+                                    //cast to the console to start execution of a region
+                                    Console.WriteLine("Started execution of region " + line.Replace("#region ", ""));
+                                }
+                                else
+                                {
+                                    Console.WriteLine("Ended executing region " + line.Replace("#endregion ", ""));
+                                }
+                            }
+                        }
+                    }
+                    //2.3 version engine now supports other script_types
                 }
+                cast(" ");
+                File.Delete("tmp." + command + ".mpf");
+
             }
             else
             {
@@ -390,6 +465,8 @@ namespace Codebutton
         }
         public async void ExecuteCommand(string command, int lineNum = 0)
         {
+            if (command.Length < 1) return;
+            if (command.StartsWith("::")) return;
             if (command.StartsWith("//") || command.StartsWith(";") || (command.StartsWith("'''") && command.EndsWith("'''")))
             {
                 Console.WriteLine("Skipping comment line (" + this.runningScriptName + ".mbs: " + lineNum + ", 1)");
@@ -461,6 +538,19 @@ namespace Codebutton
                 if (!filePath.EndsWith(".mbs")) cast(">> Attempting to execute script: " + filePath + ".mbs");
                 this.executeScript(filePath);
                 return;
+            }
+            if (command.StartsWith("encrypt "))
+            {
+                string file = command.Replace("encrypt ", "");
+                if (file.Length > 1)
+                {
+                    if (System.IO.File.Exists(file))
+                    {
+                        string filenm = System.IO.Path.GetFileNameWithoutExtension(file);
+                        encryptScript(file);
+                        cast(">> Encryption finished (" + filenm + ".mpf)");
+                    }
+                }
             }
             if (command == "account")
             {
