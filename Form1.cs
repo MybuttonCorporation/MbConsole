@@ -674,8 +674,15 @@ namespace Codebutton
                             {
                                 cast(">> Current directory changed to " + command.Replace("cd ", ""));
                                 Environment.CurrentDirectory = Environment.CurrentDirectory + "\\" + command.Replace("cd ", "");
-                                this.current_directory.Text = Environment.CurrentDirectory.ToString(); 
-
+                                this.current_directory.Text = Environment.CurrentDirectory.ToString();
+                                if (current_directory.Text.Length > @"C:\Users\winpc\source\repos\Codebutton\Codebutton\bi".Length)
+                                {
+                                    this.progressBar2.Visible = false;
+                                }
+                                if (current_directory.Text.Length < @"C:\Users\winpc\source\repos\Codebutton\Codebutton\bi".Length)
+                                {
+                                    this.progressBar2.Visible = true;
+                                }
                             }
                             else
                             {
@@ -705,14 +712,7 @@ namespace Codebutton
         {
             if (e.KeyCode == Keys.Enter)
             {
-                if (current_directory.Text.Length > @"C:\Users\winpc\source\repos\Codebutton\Codebutton\bi".Length)
-                {
-                    this.progressBar2.Visible = false;
-                }
-                if (current_directory.Text.Length < @"C:\Users\winpc\source\repos\Codebutton\Codebutton\bi".Length)
-                {
-                    this.progressBar2.Visible = true;
-                }
+
 
                 if (!commandRequester.Text.Contains("echo")) cast("client >> " + commandRequester.Text);
                 ExecuteCommand(commandRequester.Text);
@@ -738,7 +738,9 @@ namespace Codebutton
 
         private void TextBox1_TextChanged(object sender, EventArgs e)
         {
+
             this.current_directory.Text = Environment.CurrentDirectory.ToString();
+
 
             if (TextBox1.Text.Length > 17386)
             {
