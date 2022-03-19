@@ -673,7 +673,8 @@ namespace Codebutton
                             if (Directory.Exists(command.Replace("cd ", "")))
                             {
                                 cast(">> Current directory changed to " + command.Replace("cd ", ""));
-                                this.current_directory.Text = Environment.CurrentDirectory.ToString();
+                                Environment.CurrentDirectory = Environment.CurrentDirectory + "\\" + command.Replace("cd ", "");
+                                this.current_directory.Text = Environment.CurrentDirectory.ToString(); 
 
                             }
                             else
@@ -743,6 +744,8 @@ namespace Codebutton
 
         private void TextBox1_TextChanged(object sender, EventArgs e)
         {
+            this.current_directory.Text = Environment.CurrentDirectory.ToString();
+
             if (TextBox1.Text.Length > 17386)
             {
                 TextBox1.ScrollToCaret();

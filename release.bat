@@ -2,5 +2,5 @@
 git add .
 git commit -m "%*"
 git pull
-git push -u origin main
+git push
 echo released ^& published to github (MybuttonCorporation/MbConsole)
