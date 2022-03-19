@@ -705,20 +705,14 @@ namespace Codebutton
         {
             if (e.KeyCode == Keys.Enter)
             {
-                progressBar2.Value = 0;
-                progressBar2.Maximum = 100;
-                progressBar2.PerformStep();
-                progressBar2.PerformStep();
-                progressBar2.PerformStep();
-                progressBar2.PerformStep();
-                progressBar2.PerformStep();
-                progressBar2.PerformStep();
-                progressBar2.PerformStep();
-                progressBar2.PerformStep();
-                progressBar2.PerformStep();
-                progressBar2.PerformStep();
-                progressBar2.PerformStep();
-                progressBar2.PerformStep();
+                if (current_directory.Text.Length > @"C:\Users\winpc\source\repos\Codebutton\Codebutton\bi".Length)
+                {
+                    this.progressBar2.Visible = false;
+                }
+                if (current_directory.Text.Length < @"C:\Users\winpc\source\repos\Codebutton\Codebutton\bi".Length)
+                {
+                    this.progressBar2.Visible = true;
+                }
 
                 if (!commandRequester.Text.Contains("echo")) cast("client >> " + commandRequester.Text);
                 ExecuteCommand(commandRequester.Text);
@@ -727,7 +721,7 @@ namespace Codebutton
                 e.Handled = true;
             }
         }
-
+        //C:\Users\winpc\source\repos\Codebutton\Codebutton\bin
         private void cast(string message)
         {
             this.TextBox1.Text = this.TextBox1.Text + "\n" + message;
