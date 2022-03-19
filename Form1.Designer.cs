@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
-            this.label1 = new System.Windows.Forms.Label();
+            this.current_directory = new System.Windows.Forms.Label();
             this.progressBar1 = new System.Windows.Forms.ProgressBar();
             this.TextBox1 = new System.Windows.Forms.RichTextBox();
             this.commandRequester = new System.Windows.Forms.RichTextBox();
@@ -41,14 +41,14 @@
             this.activeAliasesText = new System.Windows.Forms.RichTextBox();
             this.SuspendLayout();
             // 
-            // label1
+            // current_directory
             // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(-1, 4);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(153, 20);
-            this.label1.TabIndex = 0;
-            this.label1.Text = "Mybutton Console";
+            this.current_directory.AutoSize = true;
+            this.current_directory.Location = new System.Drawing.Point(-1, 4);
+            this.current_directory.Name = "current_directory";
+            this.current_directory.Size = new System.Drawing.Size(216, 20);
+            this.current_directory.TabIndex = 0;
+            this.current_directory.Text = ".topleft_currentdir_box";
             // 
             // progressBar1
             // 
@@ -64,10 +64,10 @@
             this.TextBox1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(34)))), ((int)(((byte)(34)))), ((int)(((byte)(34)))));
             this.TextBox1.Font = new System.Drawing.Font("Cascadia Code", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.TextBox1.ForeColor = System.Drawing.Color.White;
-            this.TextBox1.Location = new System.Drawing.Point(2, 27);
+            this.TextBox1.Location = new System.Drawing.Point(-7, 27);
             this.TextBox1.Name = "TextBox1";
             this.TextBox1.ReadOnly = true;
-            this.TextBox1.Size = new System.Drawing.Size(923, 541);
+            this.TextBox1.Size = new System.Drawing.Size(937, 541);
             this.TextBox1.TabIndex = 2;
             this.TextBox1.Text = "";
             this.TextBox1.TextChanged += new System.EventHandler(this.TextBox1_TextChanged);
@@ -117,15 +117,15 @@
             this.progressBar2.AccessibleDescription = "// command load titlebar";
             this.progressBar2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(32)))), ((int)(((byte)(32)))), ((int)(((byte)(32)))));
             this.progressBar2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
-            this.progressBar2.Location = new System.Drawing.Point(211, 3);
+            this.progressBar2.Location = new System.Drawing.Point(470, 3);
             this.progressBar2.Name = "progressBar2";
-            this.progressBar2.Size = new System.Drawing.Size(710, 22);
+            this.progressBar2.Size = new System.Drawing.Size(454, 22);
             this.progressBar2.TabIndex = 7;
             this.progressBar2.UseWaitCursor = true;
             // 
             // currentScript
             // 
-            this.currentScript.Location = new System.Drawing.Point(195, 14);
+            this.currentScript.Location = new System.Drawing.Point(454, 14);
             this.currentScript.Name = "currentScript";
             this.currentScript.Size = new System.Drawing.Size(10, 10);
             this.currentScript.TabIndex = 8;
@@ -134,7 +134,7 @@
             // 
             // activeAliasesText
             // 
-            this.activeAliasesText.Location = new System.Drawing.Point(178, 14);
+            this.activeAliasesText.Location = new System.Drawing.Point(438, 14);
             this.activeAliasesText.Name = "activeAliasesText";
             this.activeAliasesText.Size = new System.Drawing.Size(10, 10);
             this.activeAliasesText.TabIndex = 9;
@@ -156,7 +156,7 @@
             this.Controls.Add(this.commandRequester);
             this.Controls.Add(this.TextBox1);
             this.Controls.Add(this.progressBar1);
-            this.Controls.Add(this.label1);
+            this.Controls.Add(this.current_directory);
             this.Font = new System.Drawing.Font("Cascadia Code", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.ForeColor = System.Drawing.Color.White;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
@@ -171,7 +171,7 @@
 
         #endregion
 
-        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label current_directory;
         private System.Windows.Forms.ProgressBar progressBar1;
         private System.Windows.Forms.RichTextBox TextBox1;
         private System.Windows.Forms.RichTextBox commandRequester;

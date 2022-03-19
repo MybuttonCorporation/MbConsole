@@ -141,7 +141,7 @@ namespace Codebutton
 
                 }
                 this.progressBar1.Visible = false;
-                this.label1.Text = "MbConsole@dev (2.2)";
+                this.current_directory.Text = "MbConsole@dev (2.2)";
                 this.label2.Visible = false;
                 this.TextBox1.Visible = true;
                 Console.WriteLine("Skipping GUI load, this will cause lag but the system will be loaded faster.");
@@ -167,7 +167,7 @@ namespace Codebutton
                 Console.WriteLine("Welcome to MbConsole v0.5 (dev@0_5) beta.");
                 Console.WriteLine("Logging will be casted to this console window throughout the use of the console.");
                 this.TextBox1.Text = ">> Loading Application...";
-                this.label1.Text = "Loading MbConsole@dev...";
+                this.current_directory.Text = "Loading MbConsole@dev...";
                 this.label2.Visible = true;
                 this.TextBox1.Visible = false;
                 this.progressBar1.PerformStep();
@@ -191,7 +191,7 @@ namespace Codebutton
                 this.progressBar1.PerformStep();
                 await System.Threading.Tasks.Task.Delay(1000);
                 this.progressBar1.Visible = false;
-                this.label1.Text = "MbConsole@dev (2.1)";
+                this.current_directory.Text = "MbConsole@dev (2.1)";
                 this.label2.Visible = false;
                 this.TextBox1.Visible = true;
                 Console.WriteLine("GUI Loaded, execution of commands are now allowed.\n");
@@ -373,7 +373,7 @@ namespace Codebutton
             var base64EncodedBytes = System.Convert.FromBase64String(base64EncodedData);
             return System.Text.Encoding.UTF8.GetString(base64EncodedBytes);
         }
-        public async void execute_internal_command(string command)
+        public void execute_internal_command(string command)
         {
             string path = System.Reflection.Assembly.GetExecutingAssembly().CodeBase;
             
@@ -404,6 +404,20 @@ namespace Codebutton
 
                         }
                         
+                    }
+                    if (script_type == "configuration")
+                    {
+                        if (!line.StartsWith("#'''") && !line.EndsWith("'''"))
+                        {
+                            // the script wants to modify the configuration
+                            if (!line.StartsWith("#script_type="))
+                            {
+    
+                                string[] value = line.Split('=');
+                                File.AppendAllText(Environment.CurrentDirectory + "\\" + "config.lmf", "\n" + value[0] + "=" + value[1]);
+                                //append to config.lmf for the current directory
+                            }
+                        }
                     }
                     if (script_type == "WRITE")
                     {
@@ -491,7 +505,7 @@ namespace Codebutton
                         string argv = arg.Replace("$.", "").Replace(",", "").Replace(".", "").Replace(";", "").Replace(":", "").Replace("!", "").Replace("+", "").Replace("-", "").Replace("'", "").Replace("/", "").Replace("*", "").Replace("^", "").Replace("(", "").Replace(")", "").Replace(")", "").Replace("?", "").Replace("{", "").Replace("}", "").Replace("=", "").Replace("%", "").Replace(">", "").Replace("<", "");
                         //string variableNm = cfg.Replace(argv + "=", ""); 
                         /// <summary>
-                        /// Replacing variables. probably the hardest thing I've done in the code yet.
+                        /// Replace variables with its contents.
                         /// </summary>
                         string variableNm = findArguement(argv); 
                         Console.WriteLine("found variable (matching vconfig.lmf or config.lmf) in command request.\nReplaced: $." + argv + " with " + variableNm);
@@ -644,14 +658,38 @@ namespace Codebutton
             // reading to the end of its redirected stream.
             // p.WaitForExit();
             // Read the output stream first and then wait.
+            if (command.StartsWith("title") || command.StartsWith("::") || command.StartsWith(": ")) return;
             string output = p.StandardOutput.ReadToEnd();
             //p.WaitForExit();
             if (output != null)
             {
                 if (output.Length < 1)
                 {
-                    cast(">> Console returned null (err_unknown_cmd)");
-                    
+                    if (command.StartsWith("cd"))
+                    {
+                        if (command.Length > 3)
+                        {
+                            if (Directory.Exists(command.Replace("cd ", "")))
+                            {
+                                cast(">> Current directory changed to " + command.Replace("cd ", ""));
+                                this.current_directory.Text = Environment.CurrentDirectory.ToString();
+
+                            }
+                            else
+                            {
+                                cast(">> The directory does not exist.");
+                                
+                            }
+                            return;
+                        } 
+                    }
+                    if (false) { }
+                    else
+                    {
+                        cast(">> Console returned null (err_unknown_cmd)");
+                        // the command is not a native internal cd command
+                    }
+
                     return;
                 }
                 cast(output);
