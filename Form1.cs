@@ -147,6 +147,7 @@ namespace Codebutton
                 Console.WriteLine("Skipping GUI load, this will cause lag but the system will be loaded faster.");
                 Console.WriteLine("GUI Loaded, execution of commands are now allowed.\n");
                 ExecuteCommand("applicationStart");
+                this.current_directory.Text = Environment.CurrentDirectory.ToString();
                 await System.Threading.Tasks.Task.Delay(1000);
                 commandRequester.KeyDown += TextBoxKeyUp;
                 
