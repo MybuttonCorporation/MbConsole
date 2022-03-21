@@ -15,6 +15,21 @@ namespace Codebutton
 {
     public partial class Form1 : Form
     {
+        public const int WM_NCLBUTTONDOWN = 0xA1;
+        public const int HT_CAPTION = 0x2;
+        [System.Runtime.InteropServices.DllImport("user32.dll")]
+        public static extern int SendMessage(IntPtr hWnd, int Msg, int wParam, int lParam);
+        [System.Runtime.InteropServices.DllImport("user32.dll")]
+        public static extern bool ReleaseCapture();
+
+        private void Form1_MouseDown(object sender, System.Windows.Forms.MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Left)
+            {
+                ReleaseCapture();
+                SendMessage(Handle, WM_NCLBUTTONDOWN, HT_CAPTION, 0);
+            }
+        }
         bool developer;
         bool loadSkip;
         bool runningScriptStatus;
@@ -44,8 +59,14 @@ namespace Codebutton
 
             InitializeComponent();
             if (devConsole) AllocConsole();
+            FormBorderStyle = FormBorderStyle.None;
+            title.MouseDown += Form1_MouseDown;
+            label5.MouseDown += Form1_MouseDown;
+            commandRequester.KeyDown += TextBoxKeyUp;
 
-         }
+            Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, Width, Height, 13, 13));
+
+        }
         [DllImport("User32.dll", CharSet = CharSet.Auto)]
         public static extern int ReleaseDC(IntPtr hWnd, IntPtr hDC);
 
@@ -149,7 +170,6 @@ namespace Codebutton
                 ExecuteCommand("applicationStart");
                 this.current_directory.Text = Environment.CurrentDirectory.ToString();
                 await System.Threading.Tasks.Task.Delay(1000);
-                commandRequester.KeyDown += TextBoxKeyUp;
                 
             }
             else
@@ -197,12 +217,21 @@ namespace Codebutton
                 this.TextBox1.Visible = true;
                 Console.WriteLine("GUI Loaded, execution of commands are now allowed.\n");
                 ExecuteCommand("applicationStart");
-                await System.Threading.Tasks.Task.Delay(1000);
-                commandRequester.KeyDown += TextBoxKeyUp;
+
+
             }
             
         }
-
+        [DllImport("Gdi32.dll", EntryPoint = "CreateRoundRectRgn")]
+        private static extern IntPtr CreateRoundRectRgn
+(
+int nLeftRect,     // x-coordinate of upper-left corner
+int nTopRect,      // y-coordinate of upper-left corner
+int nRightRect,    // x-coordinate of lower-right corner
+int nBottomRect,   // y-coordinate of lower-right corner
+int nWidthEllipse, // width of ellipse
+int nHeightEllipse // height of ellipse
+);
         private void CheckKeyword(string word, Color color, int startIndex)
         {
             if (this.TextBox1.Text.Contains(word))
@@ -677,11 +706,9 @@ namespace Codebutton
                                 this.current_directory.Text = Environment.CurrentDirectory.ToString();
                                 if (current_directory.Text.Length > @"C:\Users\winpc\source\repos\Codebutton\Codebutton\bi".Length)
                                 {
-                                    this.progressBar2.Visible = false;
                                 }
                                 if (current_directory.Text.Length < @"C:\Users\winpc\source\repos\Codebutton\Codebutton\bi".Length)
                                 {
-                                    this.progressBar2.Visible = true;
                                 }
                             }
                             else
@@ -832,6 +859,18 @@ namespace Codebutton
 
 
             }
+        }
+
+        private void label3_Click(object sender, EventArgs e)
+        {
+            this.WindowState = FormWindowState.Minimized;
+
+        }
+
+        private void label1_Click(object sender, EventArgs e)
+        {
+            Environment.Exit(1);
+
         }
     }
 }
